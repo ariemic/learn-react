@@ -1,17 +1,14 @@
 
-
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # Ignore node_modules for all projects
 node_modules/
-
+03-challenge-dev-profile/node_modules
 # Ignore build output for all projects
 build/
 /.pnp
 .pnp.js
 
 # Ignore test coverage for all projects
-coverage/# dependencies
+coverage/
 
 # Ignore various environment settings for all projects
 *.env.local

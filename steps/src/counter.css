@@ -1,0 +1,10 @@
+.btnBox {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.container {
+  margin: 0 auto;
+  width: 200px;
+}

@@ -85,12 +85,12 @@ h3 {
 
 .close {
   position: absolute;
-  top: -2px;
-  right: 10px;
+  top: 16px;
+  right: 16px;
   border: none;
   background: none;
   cursor: pointer;
-  font-size: 30px;
+  font-size: 40px;
   color: inherit;
 }
 

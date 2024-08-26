@@ -3,12 +3,12 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import "./counter.css";
 import App from "./App";
-import Counter from "./Counter";
+// import Counter from "./Counter";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <App />
-    <Counter />
+    {/* <Counter /> */}
   </React.StrictMode>
 );

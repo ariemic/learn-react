@@ -27,19 +27,30 @@ function Accordion({ data }) {
   return (
     <div className="accordion">
       {data.map((item, idx) => (
-        <Item num={idx + 1} title={item.title} text={item.text}></Item>
+        <Item
+          num={idx + 1}
+          title={item.title}
+          text={item.text}
+          key={item.title}
+        ></Item>
       ))}
     </div>
   );
 }
 
 function Item({ num, title, text }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  function handleToggle() {
+    setIsOpen((isOpen) => !isOpen);
+  }
+
   return (
-    <div className="item">
+    <div className={`item ${isOpen ? "open" : ""}`} onClick={handleToggle}>
       <p className="number">{num < 9 ? `0${num}` : num}</p>
       <p className="title">{title}</p>
-      <p className="icon">-</p>
-      <div className="content-box">{text}</div>
+      <p className="icon">{isOpen ? "-" : "+"}</p>
+      {isOpen && <div className="content-box">{text}</div>}
     </div>
   );
 }

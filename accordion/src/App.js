@@ -24,25 +24,44 @@ export default function App() {
 }
 
 function Accordion({ data }) {
+  const [currOpen, setCurrOpen] = useState(null);
   return (
     <div className="accordion">
       {data.map((item, idx) => (
         <Item
           num={idx + 1}
           title={item.title}
-          text={item.text}
+          currOpen={currOpen}
+          onOpen={setCurrOpen}
           key={item.title}
-        ></Item>
+        >
+          {item.text}
+        </Item>
       ))}
+
+      <Item
+        num={22}
+        title="Test 1"
+        currOpen={currOpen}
+        onOpen={setCurrOpen}
+        key="Test 1"
+      >
+        <p>Allow React developers to: </p>
+        <ul>
+          <li>Break up UI into components</li>
+          <li>Make components reusuable</li>
+          <li>Lorem ipsum dolor sit amet.</li>
+        </ul>
+      </Item>
     </div>
   );
 }
 
-function Item({ num, title, text }) {
-  const [isOpen, setIsOpen] = useState(false);
+function Item({ num, title, currOpen, onOpen, children }) {
+  const isOpen = num === currOpen;
 
   function handleToggle() {
-    setIsOpen((isOpen) => !isOpen);
+    onOpen(isOpen ? null : num);
   }
 
   return (
@@ -50,7 +69,7 @@ function Item({ num, title, text }) {
       <p className="number">{num < 9 ? `0${num}` : num}</p>
       <p className="title">{title}</p>
       <p className="icon">{isOpen ? "-" : "+"}</p>
-      {isOpen && <div className="content-box">{text}</div>}
+      {isOpen && <div className="content-box">{children}</div>}
     </div>
   );
 }

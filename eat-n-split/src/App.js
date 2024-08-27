@@ -30,18 +30,15 @@ function Button({ children, onClick }) {
 }
 
 export default function App() {
-  const friends = initialFriends;
-
   const [showAddFriend, setShowAddFriend] = useState(false);
-  const [isNewFriend, setIsNewFriend] = useState(false);
+  const [friends, setFriends] = useState(initialFriends);
 
   function handleShowAddFriend() {
     setShowAddFriend((show) => !show);
   }
 
   function handleAddNewFriend(newFriend) {
-    friends.push(newFriend);
-    setIsNewFriend((isNew) => !isNew);
+    setFriends((friends) => [...friends, newFriend]);
   }
 
   return (

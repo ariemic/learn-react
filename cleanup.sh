@@ -11,6 +11,7 @@ TARGET_DIR="$1"
 
 # Find and remove all .gitignore files in the specified directory
 find "$TARGET_DIR" -maxdepth 1 -type f -name ".gitignore" -exec rm -v {} \;
+find "$TARGET_DIR" -maxdepth 1 -type f -name "README.md" -exec rm -v {} \;
 
 # Find all src folders and remove specified files within them
 find "$TARGET_DIR" -maxdepth 1 -type d -name "src" | while read -r src_dir; do

@@ -20,4 +20,6 @@
 
 ![alt text](imgs/text-expander.png)
 
-## Rating movies site
+## Rating movies site - usePopcorn
+
+![alt text](imgs/usePopcorn1.png)

@@ -84,6 +84,7 @@ export default function App() {
               selectedId={selectedId}
               onCloseMovie={handleCloseSelectedMovie}
               onAddWatched={handleAddWatched}
+              watched={watched}
             />
           ) : (
             <>
@@ -183,54 +184,25 @@ function Movie({ movie, onSelectedId }) {
   );
 }
 
-function WatchedMovieList({ watched }) {
-  return (
-    <ul className="list">
-      {watched.map((movie) => (
-        <WatchedMovie movie={movie} key={movie.imdbID} />
-      ))}
-    </ul>
-  );
-}
-
-function WatchedMovie({ movie }) {
-  return (
-    <li>
-      <img src={movie.Poster} alt={`${movie.Title} poster`} />
-      <h3>{movie.Title}</h3>
-      <div>
-        <p>
-          <span>⭐️</span>
-          <span>{movie.imdbRating}</span>
-        </p>
-        <p>
-          <span>🌟</span>
-          <span>{movie.userRating}</span>
-        </p>
-        <p>
-          <span>⏳</span>
-          <span>{movie.runtime} min</span>
-        </p>
-      </div>
-    </li>
-  );
-}
-
-function MovieDetails({ selectedId, onCloseMovie, onAddWatched }) {
+function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
   const [movie, setMovie] = useState({});
-  const [rating, setRating] = useState(undefined);
+  const [rating, setRating] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
+
   function handleAdd() {
-    // const newWatchedMovie = {
-    //   imdbID: selectedId,
-    //   title,
-    //   year,
-    //   poster,
-    //   imdbRating: Number(imdbRating),
-    //   runtime: Number(runtime.split(" ").at(0)),
-    // };
-    // onAddWatched(newWatchedMovie);
+    const newWatchedMovie = {
+      imdbID: selectedId,
+      title: movie.Title,
+      year: movie.Year,
+      poster: movie.Poster,
+      rating,
+      imdbRating: Number(movie.imdbRating),
+      runtime: Number(movie.Runtime.split(" ").at(0)),
+    };
+    onAddWatched(newWatchedMovie);
+    onCloseMovie();
   }
 
   // we don't need try catch because id always exist, previous fetch gives us a warrenty for that
@@ -251,7 +223,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched }) {
     [selectedId]
   );
 
-  // if (movie.length !== {}) return;
+  if (!movie) return;
   return (
     <div className="details" key={selectedId}>
       {isLoading ? (
@@ -262,7 +234,9 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched }) {
           <MovieAdditionalDetails
             movie={movie}
             setRating={setRating}
+            rating={rating}
             onAdd={handleAdd}
+            isWatched={isWatched}
           />
         </>
       )}
@@ -289,29 +263,80 @@ function MovieHeaderDetails({ movie, onCloseMovie }) {
   );
 }
 
-function MovieAdditionalDetails({ movie, setRating, onAdd }) {
+function MovieAdditionalDetails({
+  movie,
+  setRating,
+  onAdd,
+  rating,
+  isWatched,
+}) {
   return (
     <section>
       <div className="rating">
-        <StarRating
-          maxRating={10}
-          size={24}
-          onSetRating={setRating}
-        ></StarRating>
-        <div className="btn-add" onClick={onAdd}>
-          + Add to list
-        </div>
+        {!isWatched ? (
+          <>
+            <StarRating
+              maxRating={10}
+              size={24}
+              onSetRating={setRating}
+            ></StarRating>
+            {rating > 0 && (
+              <button className="btn-add" onClick={onAdd}>
+                + Add to list
+              </button>
+            )}
+          </>
+        ) : (
+          <p>
+            <em>You rated this movie</em>
+          </p>
+        )}
       </div>
-      <p>{movie.Plot}</p>
+      <p>
+        <em>{movie.Plot}</em>
+      </p>
       <p>Staring {movie.Actors}</p>
       <p>Directed by {movie.Director}</p>
     </section>
   );
 }
 
+function WatchedMovieList({ watched }) {
+  return (
+    <ul className="list">
+      {watched.map((movie) => (
+        <WatchedMovie movie={movie} key={movie.imdbID} />
+      ))}
+    </ul>
+  );
+}
+
+function WatchedMovie({ movie }) {
+  return (
+    <li>
+      <img src={movie.poster} alt={`${movie.title} poster`} />
+      <h3>{movie.title}</h3>
+      <div>
+        <p>
+          <span>⭐️</span>
+          <span>{movie.imdbRating}</span>
+        </p>
+        <p>
+          <span>🌟</span>
+          <span>{movie.rating}</span>
+        </p>
+        <p>
+          <span>⏳</span>
+          <span>{movie.runtime} min</span>
+        </p>
+      </div>
+    </li>
+  );
+}
+
 function WatchedSummary({ watched }) {
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
-  const avgUserRating = average(watched.map((movie) => movie.userRating));
+  const avgUserRating = average(watched.map((movie) => movie.rating));
   const avgRuntime = average(watched.map((movie) => movie.runtime));
   return (
     <div className="summary">

@@ -19,8 +19,7 @@ export default function App() {
 
   const maxPossiblePoints = questions.reduce(
     (prev, curr) => prev + curr.points,
-    0
-  );
+    0k
 
   useEffect(
     function () {

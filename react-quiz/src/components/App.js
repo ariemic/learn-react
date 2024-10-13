@@ -19,16 +19,16 @@ export default function App() {
 
   const maxPossiblePoints = questions.reduce(
     (prev, curr) => prev + curr.points,
-    0k
 
-  useEffect(
-    function () {
-      fetch("http://localhost:8000/questions")
-        .then((res) => res.json())
-        .then((data) => dispatch({ type: "dataReceived", payload: data }))
-        .catch((err) => dispatch({ type: "dataFailed" }));
-    },
-    [dispatch]
+    useEffect(
+      function () {
+        fetch("http://localhost:8000/questions")
+          .then((res) => res.json())
+          .then((data) => dispatch({ type: "dataReceived", payload: data }))
+          .catch((err) => dispatch({ type: "dataFailed" }));
+      },
+      [dispatch]
+    )
   );
 
   return (
